@@ -1,13 +1,13 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Html.App as App
-import Hanoi
+import Html.App as App exposing (beginnerProgram)
+import HanoiView
 
 
 main : Program Never
 main =
     App.beginnerProgram
-        { model = Hanoi.init
-        , update = Hanoi.update
-        , view = Hanoi.view
+        { model = HanoiView.init
+        , update = HanoiView.update
+        , view = HanoiView.view
         }

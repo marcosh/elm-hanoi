@@ -1,9 +1,4 @@
-module Hanoi exposing (init, update, view)
-
-import Html exposing (Html, text, div)
-
-
--- MODEL --
+module Hanoi exposing (Model, init, move, disposition, Position(..), OutMsg(..))
 
 
 type Position
@@ -21,35 +16,36 @@ type alias Model =
 
 init : Model
 init =
-    [ FirstPeg, SecondPeg, ThirdPeg, SecondPeg, ThirdPeg, FirstPeg, FirstPeg ]
+    -- for the moment we decide the number of pegs
+    List.repeat 3 FirstPeg
 
 
-
--- UPDATE --
-
-
-type Msg
-    = NewGame
-    | Move Position Position
+type OutMsg
+    = SamePeg
+    | InvalidMove
+    | NoDiskOnPeg
 
 
-update : Msg -> Model -> Model
-update msg model =
-    case msg of
-        NewGame ->
-            init
-
-        Move from to ->
-            move model from to
-
-
-move : Model -> Position -> Position -> Model
+move : Model -> Position -> Position -> ( Model, Maybe OutMsg )
 move model from to =
-    model
+    if from == to then
+        ( model, Just SamePeg )
+    else
+        case model of
+            firstPosition :: rest ->
+                if firstPosition == to then
+                    ( model, Just InvalidMove )
+                else if firstPosition == from then
+                    ( to :: rest, Nothing )
+                else
+                    let
+                        ( subModel, maybeOutMsg ) =
+                            move rest from to
+                    in
+                        ( firstPosition :: subModel, maybeOutMsg )
 
-
-
--- VIEW --
+            _ ->
+                ( [], Just NoDiskOnPeg )
 
 
 disksPerPeg : Model -> Position -> List Int
@@ -70,25 +66,6 @@ disksPerPegNumber number model peg =
             []
 
 
-view : Model -> Html Msg
-view model =
-    div []
-        [ div []
-            ((text "First Peg: ")
-                :: (List.map (toString >> text)
-                        (disksPerPeg model FirstPeg)
-                   )
-            )
-        , div []
-            ((text "Second Peg: ")
-                :: (List.map (toString >> text)
-                        (disksPerPeg model SecondPeg)
-                   )
-            )
-        , div []
-            ((text "Third Peg: ")
-                :: (List.map (toString >> text)
-                        (disksPerPeg model ThirdPeg)
-                   )
-            )
-        ]
+disposition : Model -> ( List Int, List Int, List Int )
+disposition model =
+    ( disksPerPeg model FirstPeg, disksPerPeg model SecondPeg, disksPerPeg model ThirdPeg )
