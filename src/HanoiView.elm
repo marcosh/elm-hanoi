@@ -44,30 +44,26 @@ pegToPosition peg =
 
 
 type Msg
-    = From Peg
-    | To Peg
-    | Move
+    = From (Maybe Peg)
+    | To (Maybe Peg)
+    | Error String
+    | Move Peg Peg
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        From peg ->
-            { model | from = Just peg, message = Nothing }
+        From maybePeg ->
+            { model | from = maybePeg, message = Nothing }
 
-        To peg ->
-            { model | to = Just peg, message = Nothing }
+        To maybePeg ->
+            { model | to = maybePeg, message = Nothing }
 
-        Move ->
-            case ( model.from, model.to ) of
-                ( Nothing, _ ) ->
-                    { model | message = Just "You didn't specify the starting peg" }
+        Error message ->
+            { model | message = Just message }
 
-                ( _, Nothing ) ->
-                    { model | message = Just "You didn't specify the ending peg" }
-
-                ( Just from, Just to ) ->
-                    performMove model.status from to
+        Move from to ->
+            performMove model.status from to
 
 
 performMove : Hanoi.Model -> Peg -> Peg -> Model
@@ -101,19 +97,19 @@ view model =
                 [ div []
                     ((text "First Peg: ")
                         :: (List.map (toString >> text)
-                                firstPeg
+                                (pegDisksWithOffset firstPeg)
                            )
                     )
                 , div []
                     ((text "Second Peg: ")
                         :: (List.map (toString >> text)
-                                secondPeg
+                                (pegDisksWithOffset secondPeg)
                            )
                     )
                 , div []
                     ((text "Third Peg: ")
                         :: (List.map (toString >> text)
-                                thirdPeg
+                                (pegDisksWithOffset thirdPeg)
                            )
                     )
                 ]
@@ -135,7 +131,7 @@ view model =
                     , option [ selected (model.to == Just Third) ] [ text "Third" ]
                     ]
                 ]
-            , button [ onClick Move ] [ text "Move" ]
+            , button [ onClick (tryMove model) ] [ text "Move" ]
             , case model.message of
                 Just string ->
                     text string
@@ -145,26 +141,39 @@ view model =
             ]
 
 
-onSelect : (Peg -> Msg) -> Attribute Msg
+onSelect : (Maybe Peg -> Msg) -> Attribute Msg
 onSelect msg =
     on "change" (Json.map msg targetSelectedIndex)
 
 
-targetSelectedIndex : Json.Decoder Peg
+targetSelectedIndex : Json.Decoder (Maybe Peg)
 targetSelectedIndex =
     Json.map
         (\i ->
             case i of
                 1 ->
-                    First
+                    Just First
 
                 2 ->
-                    Second
+                    Just Second
 
                 3 ->
-                    Third
+                    Just Third
 
                 _ ->
-                    Debug.crash "impossible value"
+                    Nothing
         )
         (Json.at [ "target", "selectedIndex" ] Json.int)
+
+
+tryMove : Model -> Msg
+tryMove model =
+    case ( model.from, model.to ) of
+        ( Nothing, _ ) ->
+            Error "You didn't specify the starting peg"
+
+        ( _, Nothing ) ->
+            Error "You didn't specify the ending peg"
+
+        ( Just from, Just to ) ->
+            Move from to

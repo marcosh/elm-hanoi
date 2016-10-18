@@ -1,4 +1,4 @@
-module Hanoi exposing (Model, init, move, disposition, Position(..), OutMsg(..))
+module Hanoi exposing (Model, init, move, disposition, pegDisksWithOffset, Position(..), OutMsg(..))
 
 
 type Position
@@ -7,7 +7,7 @@ type Position
     | ThirdPeg
 
 
-{-| The i-th element of the list represents the position of i-th peg, where smaller disks have lower numbers.
+{-| The i-th element of the list represents the position of i-th disk, where smaller disks have lower numbers.
 For example the first element of the list represents the smallest disk
 -}
 type alias Model =
@@ -69,3 +69,25 @@ disksPerPegNumber number model peg =
 disposition : Model -> ( List Int, List Int, List Int )
 disposition model =
     ( disksPerPeg model FirstPeg, disksPerPeg model SecondPeg, disksPerPeg model ThirdPeg )
+
+
+pegDisksWithOffset : List Int -> List ( Int, Int )
+pegDisksWithOffset disks =
+    case disks of
+        [] ->
+            []
+
+        top :: rest ->
+            let
+                restWithOffset =
+                    pegDisksWithOffset rest
+
+                maxOffset =
+                    case restWithOffset of
+                        [] ->
+                            -1
+
+                        head :: _ ->
+                            fst head
+            in
+                ( maxOffset + 1, top ) :: restWithOffset
