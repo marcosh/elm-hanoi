@@ -1,8 +1,8 @@
 module HanoiView exposing (init, update, view)
 
-import Html exposing (Html, Attribute, div, select, option, button, text)
+import Html exposing (Html, Attribute, div, select, option, button, text, ol, li)
 import Html.Events exposing (on, onClick)
-import Html.Attributes exposing (selected)
+import Html.Attributes exposing (class, selected, id)
 import Hanoi exposing (..)
 import Json.Decode as Json exposing (map, at, int)
 
@@ -86,31 +86,36 @@ performMove status from to =
                 Model newStatus Nothing Nothing Nothing
 
 
+viewDisk : Int -> Html Msg
+viewDisk i =
+    li [ class "disk" ]
+        [ div [ id ("disk" ++ toString i) ] []
+        ]
+
+
 view : Model -> Html Msg
 view model =
     let
         ( firstPeg, secondPeg, thirdPeg ) =
             Hanoi.disposition model.status
     in
-        div []
-            [ div []
-                [ div []
-                    ((text "First Peg: ")
-                        :: (List.map (toString >> text)
-                                (pegDisksWithOffset firstPeg)
-                           )
+        div [ class "container" ]
+            [ div [ class "peg" ]
+                [ ol [ class "pegList" ]
+                    (List.map viewDisk
+                        firstPeg
                     )
-                , div []
-                    ((text "Second Peg: ")
-                        :: (List.map (toString >> text)
-                                (pegDisksWithOffset secondPeg)
-                           )
+                ]
+            , div [ class "peg" ]
+                [ ol [ class "pegList" ]
+                    (List.map viewDisk
+                        secondPeg
                     )
-                , div []
-                    ((text "Third Peg: ")
-                        :: (List.map (toString >> text)
-                                (pegDisksWithOffset thirdPeg)
-                           )
+                ]
+            , div [ class "peg" ]
+                [ ol [ class "pegList" ]
+                    (List.map viewDisk
+                        thirdPeg
                     )
                 ]
             , div []

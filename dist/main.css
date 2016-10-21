@@ -1,0 +1,10 @@
+.container {
+  display: block;
+  width: 600px;
+  margin: auto;
+}
+
+.peg {
+  display: inline-block;
+  width: 200px;
+}
