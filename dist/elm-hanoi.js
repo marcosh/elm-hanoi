@@ -7897,25 +7897,46 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _marcosh$elm_hanoi$Hanoi$pegDisksWithOffset = function (disks) {
+	var _p0 = disks;
+	if (_p0.ctor === '[]') {
+		return _elm_lang$core$Native_List.fromArray(
+			[]);
+	} else {
+		var restWithOffset = _marcosh$elm_hanoi$Hanoi$pegDisksWithOffset(_p0._1);
+		var maxOffset = function () {
+			var _p1 = restWithOffset;
+			if (_p1.ctor === '[]') {
+				return -1;
+			} else {
+				return _elm_lang$core$Basics$fst(_p1._0);
+			}
+		}();
+		return A2(
+			_elm_lang$core$List_ops['::'],
+			{ctor: '_Tuple2', _0: maxOffset + 1, _1: _p0._0},
+			restWithOffset);
+	}
+};
 var _marcosh$elm_hanoi$Hanoi$disksPerPegNumber = F3(
 	function (number, model, peg) {
 		disksPerPegNumber:
 		while (true) {
-			var _p0 = model;
-			if (_p0.ctor === '::') {
-				var _p1 = _p0._1;
-				if (_elm_lang$core$Native_Utils.eq(_p0._0, peg)) {
+			var _p2 = model;
+			if (_p2.ctor === '::') {
+				var _p3 = _p2._1;
+				if (_elm_lang$core$Native_Utils.eq(_p2._0, peg)) {
 					return A2(
 						_elm_lang$core$List_ops['::'],
 						number,
-						A3(_marcosh$elm_hanoi$Hanoi$disksPerPegNumber, number + 1, _p1, peg));
+						A3(_marcosh$elm_hanoi$Hanoi$disksPerPegNumber, number + 1, _p3, peg));
 				} else {
-					var _v1 = number + 1,
-						_v2 = _p1,
-						_v3 = peg;
-					number = _v1;
-					model = _v2;
-					peg = _v3;
+					var _v3 = number + 1,
+						_v4 = _p3,
+						_v5 = peg;
+					number = _v3;
+					model = _v4;
+					peg = _v5;
 					continue disksPerPegNumber;
 				}
 			} else {
@@ -7949,30 +7970,30 @@ var _marcosh$elm_hanoi$Hanoi$move = F3(
 				_1: _elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$Hanoi$SamePeg)
 			};
 		} else {
-			var _p2 = model;
-			if (_p2.ctor === '::') {
-				var _p5 = _p2._1;
-				var _p4 = _p2._0;
-				if (_elm_lang$core$Native_Utils.eq(_p4, to)) {
+			var _p4 = model;
+			if (_p4.ctor === '::') {
+				var _p7 = _p4._1;
+				var _p6 = _p4._0;
+				if (_elm_lang$core$Native_Utils.eq(_p6, to)) {
 					return {
 						ctor: '_Tuple2',
 						_0: model,
 						_1: _elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$Hanoi$InvalidMove)
 					};
 				} else {
-					if (_elm_lang$core$Native_Utils.eq(_p4, from)) {
+					if (_elm_lang$core$Native_Utils.eq(_p6, from)) {
 						return {
 							ctor: '_Tuple2',
-							_0: A2(_elm_lang$core$List_ops['::'], to, _p5),
+							_0: A2(_elm_lang$core$List_ops['::'], to, _p7),
 							_1: _elm_lang$core$Maybe$Nothing
 						};
 					} else {
-						var _p3 = A3(_marcosh$elm_hanoi$Hanoi$move, _p5, from, to);
-						var subModel = _p3._0;
-						var maybeOutMsg = _p3._1;
+						var _p5 = A3(_marcosh$elm_hanoi$Hanoi$move, _p7, from, to);
+						var subModel = _p5._0;
+						var maybeOutMsg = _p5._1;
 						return {
 							ctor: '_Tuple2',
-							_0: A2(_elm_lang$core$List_ops['::'], _p4, subModel),
+							_0: A2(_elm_lang$core$List_ops['::'], _p6, subModel),
 							_1: maybeOutMsg
 						};
 					}
@@ -7988,9 +8009,29 @@ var _marcosh$elm_hanoi$Hanoi$move = F3(
 		}
 	});
 
+var _marcosh$elm_hanoi$HanoiView$viewDisk = function (_p0) {
+	var _p1 = _p0;
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$id(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'disk',
+					_elm_lang$core$Basics$toString(_p1._1))),
+				_elm_lang$html$Html_Attributes$class('disk'),
+				A2(
+				_elm_lang$html$Html_Attributes$attribute,
+				'data-offset',
+				_elm_lang$core$Basics$toString(_p1._0))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
 var _marcosh$elm_hanoi$HanoiView$pegToPosition = function (peg) {
-	var _p0 = peg;
-	switch (_p0.ctor) {
+	var _p2 = peg;
+	switch (_p2.ctor) {
 		case 'First':
 			return _marcosh$elm_hanoi$Hanoi$FirstPeg;
 		case 'Second':
@@ -8009,16 +8050,16 @@ var _marcosh$elm_hanoi$HanoiView$init = function () {
 }();
 var _marcosh$elm_hanoi$HanoiView$performMove = F3(
 	function (status, from, to) {
-		var _p1 = A3(
+		var _p3 = A3(
 			_marcosh$elm_hanoi$Hanoi$move,
 			status,
 			_marcosh$elm_hanoi$HanoiView$pegToPosition(from),
 			_marcosh$elm_hanoi$HanoiView$pegToPosition(to));
-		var newStatus = _p1._0;
-		var maybeOutMsg = _p1._1;
-		var _p2 = maybeOutMsg;
-		if (_p2.ctor === 'Just') {
-			switch (_p2._0.ctor) {
+		var newStatus = _p3._0;
+		var maybeOutMsg = _p3._1;
+		var _p4 = maybeOutMsg;
+		if (_p4.ctor === 'Just') {
+			switch (_p4._0.ctor) {
 				case 'SamePeg':
 					return A4(
 						_marcosh$elm_hanoi$HanoiView$Model,
@@ -8047,41 +8088,24 @@ var _marcosh$elm_hanoi$HanoiView$performMove = F3(
 	});
 var _marcosh$elm_hanoi$HanoiView$update = F2(
 	function (msg, model) {
-		var _p3 = msg;
-		switch (_p3.ctor) {
+		var _p5 = msg;
+		switch (_p5.ctor) {
 			case 'From':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{
-						from: _elm_lang$core$Maybe$Just(_p3._0),
-						message: _elm_lang$core$Maybe$Nothing
-					});
+					{from: _p5._0, message: _elm_lang$core$Maybe$Nothing});
 			case 'To':
 				return _elm_lang$core$Native_Utils.update(
 					model,
+					{to: _p5._0, message: _elm_lang$core$Maybe$Nothing});
+			case 'Error':
+				return _elm_lang$core$Native_Utils.update(
+					model,
 					{
-						to: _elm_lang$core$Maybe$Just(_p3._0),
-						message: _elm_lang$core$Maybe$Nothing
+						message: _elm_lang$core$Maybe$Just(_p5._0)
 					});
 			default:
-				var _p4 = {ctor: '_Tuple2', _0: model.from, _1: model.to};
-				if (_p4._0.ctor === 'Nothing') {
-					return _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							message: _elm_lang$core$Maybe$Just('You didn\'t specify the starting peg')
-						});
-				} else {
-					if (_p4._1.ctor === 'Nothing') {
-						return _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								message: _elm_lang$core$Maybe$Just('You didn\'t specify the ending peg')
-							});
-					} else {
-						return A3(_marcosh$elm_hanoi$HanoiView$performMove, model.status, _p4._0._0, _p4._1._0);
-					}
-				}
+				return A3(_marcosh$elm_hanoi$HanoiView$performMove, model.status, _p5._0, _p5._1);
 		}
 	});
 var _marcosh$elm_hanoi$HanoiView$Third = {ctor: 'Third'};
@@ -8090,22 +8114,16 @@ var _marcosh$elm_hanoi$HanoiView$First = {ctor: 'First'};
 var _marcosh$elm_hanoi$HanoiView$targetSelectedIndex = A2(
 	_elm_lang$core$Json_Decode$map,
 	function (i) {
-		var _p5 = i;
-		switch (_p5) {
+		var _p6 = i;
+		switch (_p6) {
 			case 1:
-				return _marcosh$elm_hanoi$HanoiView$First;
+				return _elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$First);
 			case 2:
-				return _marcosh$elm_hanoi$HanoiView$Second;
+				return _elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Second);
 			case 3:
-				return _marcosh$elm_hanoi$HanoiView$Third;
+				return _elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Third);
 			default:
-				return _elm_lang$core$Native_Utils.crashCase(
-					'HanoiView',
-					{
-						start: {line: 154, column: 13},
-						end: {line: 165, column: 51}
-					},
-					_p5)('impossible value');
+				return _elm_lang$core$Maybe$Nothing;
 		}
 	},
 	A2(
@@ -8119,7 +8137,25 @@ var _marcosh$elm_hanoi$HanoiView$onSelect = function (msg) {
 		'change',
 		A2(_elm_lang$core$Json_Decode$map, msg, _marcosh$elm_hanoi$HanoiView$targetSelectedIndex));
 };
-var _marcosh$elm_hanoi$HanoiView$Move = {ctor: 'Move'};
+var _marcosh$elm_hanoi$HanoiView$Move = F2(
+	function (a, b) {
+		return {ctor: 'Move', _0: a, _1: b};
+	});
+var _marcosh$elm_hanoi$HanoiView$Error = function (a) {
+	return {ctor: 'Error', _0: a};
+};
+var _marcosh$elm_hanoi$HanoiView$tryMove = function (model) {
+	var _p7 = {ctor: '_Tuple2', _0: model.from, _1: model.to};
+	if (_p7._0.ctor === 'Nothing') {
+		return _marcosh$elm_hanoi$HanoiView$Error('You didn\'t specify the starting peg');
+	} else {
+		if (_p7._1.ctor === 'Nothing') {
+			return _marcosh$elm_hanoi$HanoiView$Error('You didn\'t specify the ending peg');
+		} else {
+			return A2(_marcosh$elm_hanoi$HanoiView$Move, _p7._0._0, _p7._1._0);
+		}
+	}
+};
 var _marcosh$elm_hanoi$HanoiView$To = function (a) {
 	return {ctor: 'To', _0: a};
 };
@@ -8127,10 +8163,10 @@ var _marcosh$elm_hanoi$HanoiView$From = function (a) {
 	return {ctor: 'From', _0: a};
 };
 var _marcosh$elm_hanoi$HanoiView$view = function (model) {
-	var _p7 = _marcosh$elm_hanoi$Hanoi$disposition(model.status);
-	var firstPeg = _p7._0;
-	var secondPeg = _p7._1;
-	var thirdPeg = _p7._2;
+	var _p8 = _marcosh$elm_hanoi$Hanoi$disposition(model.status);
+	var firstPeg = _p8._0;
+	var secondPeg = _p8._1;
+	var thirdPeg = _p8._2;
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -8140,199 +8176,262 @@ var _marcosh$elm_hanoi$HanoiView$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('peg')
-					]),
-				A2(
-					_elm_lang$core$List_ops['::'],
-					_elm_lang$html$Html$text('First Peg: '),
-					A2(
-						_elm_lang$core$List$map,
-						function (_p8) {
-							return _elm_lang$html$Html$text(
-								_elm_lang$core$Basics$toString(_p8));
-						},
-						firstPeg))),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('peg')
-					]),
-				A2(
-					_elm_lang$core$List_ops['::'],
-					_elm_lang$html$Html$text('Second Peg: '),
-					A2(
-						_elm_lang$core$List$map,
-						function (_p9) {
-							return _elm_lang$html$Html$text(
-								_elm_lang$core$Basics$toString(_p9));
-						},
-						secondPeg))),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('peg')
-					]),
-				A2(
-					_elm_lang$core$List_ops['::'],
-					_elm_lang$html$Html$text('Third Peg: '),
-					A2(
-						_elm_lang$core$List$map,
-						function (_p10) {
-							return _elm_lang$html$Html$text(
-								_elm_lang$core$Basics$toString(_p10));
-						},
-						thirdPeg))),
-				A2(
-				_elm_lang$html$Html$div,
+				_elm_lang$html$Html$h1,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('From: '),
+						_elm_lang$html$Html$text('Hanoi Towers')
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('pegs')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
 						A2(
-						_elm_lang$html$Html$select,
+						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_marcosh$elm_hanoi$HanoiView$onSelect(_marcosh$elm_hanoi$HanoiView$From)
+								_elm_lang$html$Html_Attributes$class('peg')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
-								_elm_lang$html$Html$option,
-								_elm_lang$core$Native_List.fromArray(
-									[]),
+								_elm_lang$html$Html$ol,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('')
-									])),
-								A2(
-								_elm_lang$html$Html$option,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$selected(
-										_elm_lang$core$Native_Utils.eq(
-											model.from,
-											_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$First)))
+										_elm_lang$html$Html_Attributes$class('pegList')
 									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('First')
-									])),
 								A2(
-								_elm_lang$html$Html$option,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$selected(
-										_elm_lang$core$Native_Utils.eq(
-											model.from,
-											_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Second)))
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('Second')
-									])),
+									_elm_lang$core$List$map,
+									_marcosh$elm_hanoi$HanoiView$viewDisk,
+									_marcosh$elm_hanoi$Hanoi$pegDisksWithOffset(firstPeg)))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('peg')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
 								A2(
-								_elm_lang$html$Html$option,
+								_elm_lang$html$Html$ol,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html_Attributes$selected(
-										_elm_lang$core$Native_Utils.eq(
-											model.from,
-											_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Third)))
+										_elm_lang$html$Html_Attributes$class('pegList')
 									]),
+								A2(
+									_elm_lang$core$List$map,
+									_marcosh$elm_hanoi$HanoiView$viewDisk,
+									_marcosh$elm_hanoi$Hanoi$pegDisksWithOffset(secondPeg)))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('peg')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$ol,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('Third')
-									]))
+										_elm_lang$html$Html_Attributes$class('pegList')
+									]),
+								A2(
+									_elm_lang$core$List$map,
+									_marcosh$elm_hanoi$HanoiView$viewDisk,
+									_marcosh$elm_hanoi$Hanoi$pegDisksWithOffset(thirdPeg)))
 							]))
 					])),
 				A2(
 				_elm_lang$html$Html$div,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[
+						_elm_lang$html$Html_Attributes$class('controls')
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('To: '),
 						A2(
-						_elm_lang$html$Html$select,
+						_elm_lang$html$Html$div,
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_marcosh$elm_hanoi$HanoiView$onSelect(_marcosh$elm_hanoi$HanoiView$To)
+								_elm_lang$html$Html_Attributes$class('control')
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
-								_elm_lang$html$Html$option,
+								_elm_lang$html$Html$label,
 								_elm_lang$core$Native_List.fromArray(
 									[]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('')
+										_elm_lang$html$Html$text('From:')
 									])),
 								A2(
-								_elm_lang$html$Html$option,
+								_elm_lang$html$Html$select,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html_Attributes$selected(
-										_elm_lang$core$Native_Utils.eq(
-											model.to,
-											_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$First)))
+										_marcosh$elm_hanoi$HanoiView$onSelect(_marcosh$elm_hanoi$HanoiView$From)
 									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('First')
-									])),
-								A2(
-								_elm_lang$html$Html$option,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$selected(
-										_elm_lang$core$Native_Utils.eq(
-											model.to,
-											_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Second)))
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('Second')
-									])),
-								A2(
-								_elm_lang$html$Html$option,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$selected(
-										_elm_lang$core$Native_Utils.eq(
-											model.to,
-											_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Third)))
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('Third')
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('')
+											])),
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$selected(
+												_elm_lang$core$Native_Utils.eq(
+													model.from,
+													_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$First)))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('First')
+											])),
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$selected(
+												_elm_lang$core$Native_Utils.eq(
+													model.from,
+													_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Second)))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Second')
+											])),
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$selected(
+												_elm_lang$core$Native_Utils.eq(
+													model.from,
+													_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Third)))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Third')
+											]))
 									]))
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('control')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$label,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('To:')
+									])),
+								A2(
+								_elm_lang$html$Html$select,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_marcosh$elm_hanoi$HanoiView$onSelect(_marcosh$elm_hanoi$HanoiView$To)
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('')
+											])),
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$selected(
+												_elm_lang$core$Native_Utils.eq(
+													model.to,
+													_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$First)))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('First')
+											])),
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$selected(
+												_elm_lang$core$Native_Utils.eq(
+													model.to,
+													_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Second)))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Second')
+											])),
+										A2(
+										_elm_lang$html$Html$option,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$selected(
+												_elm_lang$core$Native_Utils.eq(
+													model.to,
+													_elm_lang$core$Maybe$Just(_marcosh$elm_hanoi$HanoiView$Third)))
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('Third')
+											]))
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$button,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(
+								_marcosh$elm_hanoi$HanoiView$tryMove(model))
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Move')
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$class('messages')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								function () {
+								var _p9 = model.message;
+								if (_p9.ctor === 'Just') {
+									return _elm_lang$html$Html$text(_p9._0);
+								} else {
+									return _elm_lang$html$Html$text('');
+								}
+							}()
 							]))
-					])),
-				A2(
-				_elm_lang$html$Html$button,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Events$onClick(_marcosh$elm_hanoi$HanoiView$Move)
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Move')
-					])),
-				function () {
-				var _p11 = model.message;
-				if (_p11.ctor === 'Just') {
-					return _elm_lang$html$Html$text(_p11._0);
-				} else {
-					return _elm_lang$html$Html$text('');
-				}
-			}()
+					]))
 			]));
 };
 

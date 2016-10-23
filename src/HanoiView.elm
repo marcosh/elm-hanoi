@@ -1,6 +1,6 @@
 module HanoiView exposing (init, update, view)
 
-import Html exposing (Html, Attribute, div, select, option, button, text, ol, li)
+import Html exposing (Html, Attribute, div, select, option, button, text, ol, li, h1, label)
 import Html.Events exposing (on, onClick)
 import Html.Attributes exposing (class, selected, id, attribute)
 import Hanoi exposing (..)
@@ -88,9 +88,7 @@ performMove status from to =
 
 viewDisk : ( Int, Int ) -> Html Msg
 viewDisk ( offset, i ) =
-    li [ class "disk" ]
-        [ div [ id ("disk" ++ toString i), attribute "data-offset" (toString offset) ] []
-        ]
+    li [ id ("disk" ++ toString i), class "disk", attribute "data-offset" (toString offset) ] []
 
 
 view : Model -> Html Msg
@@ -100,49 +98,56 @@ view model =
             Hanoi.disposition model.status
     in
         div [ class "container" ]
-            [ div [ class "peg" ]
-                [ ol [ class "pegList" ]
-                    (List.map viewDisk
-                        (Hanoi.pegDisksWithOffset firstPeg)
-                    )
-                ]
-            , div [ class "peg" ]
-                [ ol [ class "pegList" ]
-                    (List.map viewDisk
-                        (Hanoi.pegDisksWithOffset secondPeg)
-                    )
-                ]
-            , div [ class "peg" ]
-                [ ol [ class "pegList" ]
-                    (List.map viewDisk
-                        (Hanoi.pegDisksWithOffset thirdPeg)
-                    )
-                ]
-            , div []
-                [ text "From: "
-                , select [ onSelect From ]
-                    [ option [] [ text "" ]
-                    , option [ selected (model.from == Just First) ] [ text "First" ]
-                    , option [ selected (model.from == Just Second) ] [ text "Second" ]
-                    , option [ selected (model.from == Just Third) ] [ text "Third" ]
+            [ h1 [] [ text "Hanoi Towers" ]
+            , div [ class "pegs" ]
+                [ div [ class "peg" ]
+                    [ ol [ class "pegList" ]
+                        (List.map viewDisk
+                            (Hanoi.pegDisksWithOffset firstPeg)
+                        )
+                    ]
+                , div [ class "peg" ]
+                    [ ol [ class "pegList" ]
+                        (List.map viewDisk
+                            (Hanoi.pegDisksWithOffset secondPeg)
+                        )
+                    ]
+                , div [ class "peg" ]
+                    [ ol [ class "pegList" ]
+                        (List.map viewDisk
+                            (Hanoi.pegDisksWithOffset thirdPeg)
+                        )
                     ]
                 ]
-            , div []
-                [ text "To: "
-                , select [ onSelect To ]
-                    [ option [] [ text "" ]
-                    , option [ selected (model.to == Just First) ] [ text "First" ]
-                    , option [ selected (model.to == Just Second) ] [ text "Second" ]
-                    , option [ selected (model.to == Just Third) ] [ text "Third" ]
+            , div [ class "controls" ]
+                [ div [ class "control" ]
+                    [ label [] [ text "From:" ]
+                    , select [ onSelect From ]
+                        [ option [] [ text "" ]
+                        , option [ selected (model.from == Just First) ] [ text "First" ]
+                        , option [ selected (model.from == Just Second) ] [ text "Second" ]
+                        , option [ selected (model.from == Just Third) ] [ text "Third" ]
+                        ]
                     ]
-                ]
-            , button [ onClick (tryMove model) ] [ text "Move" ]
-            , case model.message of
-                Just string ->
-                    text string
+                , div [ class "control" ]
+                    [ label [] [ text "To:" ]
+                    , select [ onSelect To ]
+                        [ option [] [ text "" ]
+                        , option [ selected (model.to == Just First) ] [ text "First" ]
+                        , option [ selected (model.to == Just Second) ] [ text "Second" ]
+                        , option [ selected (model.to == Just Third) ] [ text "Third" ]
+                        ]
+                    ]
+                , button [ onClick (tryMove model) ] [ text "Move" ]
+                , div [ class "messages" ]
+                    [ case model.message of
+                        Just string ->
+                            text string
 
-                Nothing ->
-                    text ""
+                        Nothing ->
+                            text ""
+                    ]
+                ]
             ]
 
 
