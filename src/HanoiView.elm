@@ -2,7 +2,7 @@ module HanoiView exposing (init, update, view)
 
 import Html exposing (Html, Attribute, div, select, option, button, text, ol, li)
 import Html.Events exposing (on, onClick)
-import Html.Attributes exposing (class, selected, id)
+import Html.Attributes exposing (class, selected, id, attribute)
 import Hanoi exposing (..)
 import Json.Decode as Json exposing (map, at, int)
 
@@ -86,10 +86,10 @@ performMove status from to =
                 Model newStatus Nothing Nothing Nothing
 
 
-viewDisk : Int -> Html Msg
-viewDisk i =
+viewDisk : ( Int, Int ) -> Html Msg
+viewDisk ( offset, i ) =
     li [ class "disk" ]
-        [ div [ id ("disk" ++ toString i) ] []
+        [ div [ id ("disk" ++ toString i), attribute "data-offset" (toString offset) ] []
         ]
 
 
@@ -103,19 +103,19 @@ view model =
             [ div [ class "peg" ]
                 [ ol [ class "pegList" ]
                     (List.map viewDisk
-                        firstPeg
+                        (Hanoi.pegDisksWithOffset firstPeg)
                     )
                 ]
             , div [ class "peg" ]
                 [ ol [ class "pegList" ]
                     (List.map viewDisk
-                        secondPeg
+                        (Hanoi.pegDisksWithOffset secondPeg)
                     )
                 ]
             , div [ class "peg" ]
                 [ ol [ class "pegList" ]
                     (List.map viewDisk
-                        thirdPeg
+                        (Hanoi.pegDisksWithOffset thirdPeg)
                     )
                 ]
             , div []
