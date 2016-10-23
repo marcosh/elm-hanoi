@@ -1,0 +1,127 @@
+// compressedFilenamePattern: ../dist/$1.css
+
+* {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.container {
+  display: block;
+  width: 906px;
+  margin: auto;
+
+  h1 {
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .pegs {
+    display: block;
+    height: 300px;
+    margin-bottom: 40px;
+    border-bottom: 4px solid #ddd;
+    border-radius: 10px;
+
+    .peg {
+      position: relative;
+      display: inline-block;
+      width: 300px;
+      height: 300px;
+
+      .pegList {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translate(-50%, 0);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        .disk {
+          margin: auto;
+          height: 40px;
+          border-radius: 10px;
+        }
+
+      }
+
+    }
+
+  }
+
+  .controls {
+    display: block;
+    margin: auto;
+    width: 300px;
+
+    .control {
+      margin-bottom: 8px;
+
+      select {
+        display: block;
+        width: 300px;
+        padding: 8px 16px;
+        font-size: 16px;
+      }
+
+    }
+
+    button {
+      width: 300px;
+      margin-top: 8px;
+      padding: 8px 16px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .messages {
+      margin-top: 16px;
+      font-weight: 300;
+      text-align: center;
+      color: red;
+    }
+
+  }
+
+}
+
+#disk1 {
+  width: 40px;
+  background: red;
+  border-bottom: 2px solid darken(red, 10%);
+}
+
+#disk2 {
+  width: 80px;
+  background: orange;
+  border-bottom: 2px solid darken(orange, 10%);
+}
+
+#disk3 {
+  width: 120px;
+  background: yellow;
+  border-bottom: 2px solid darken(yellow, 10%);
+}
+
+#disk4 {
+  width: 160px;
+  background: green;
+  border-bottom: 2px solid darken(green, 10%);
+}
+
+#disk5 {
+  width: 200px;
+  background: lightblue;
+  border-bottom: 2px solid darken(lightblue, 10%);
+}
+
+#disk6 {
+  width: 240px;
+  background: blue;
+  border-bottom: 2px solid darken(blue, 10%);
+}
+
+#disk7 {
+  width: 280px;
+  background: violet;
+  border-bottom: 2px solid darken(violet, 10%);
+}
